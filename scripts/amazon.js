@@ -40,7 +40,7 @@ products.forEach((product) => {
 
                 <div class="product-spacer"></div>
 
-                <div class="added-to-cart">
+                <div class="added-to-cart js-added-selector-${product.id}">
                     <img src="images/icons/checkmark.png"> Added
                 </div>
 
@@ -54,7 +54,7 @@ document.querySelector('.js-products-grid').innerHTML = productHTML;
 document.querySelectorAll('.js-add-to-cart')
     .forEach((button) => {
         button.addEventListener('click', () => {
-            const productId = button.dataset.storeId;
+            const { storeId: productId } = button.dataset;
 
             const selectedProduct = document.querySelector(`.js-quantity-selector-${productId}`)
 
@@ -71,7 +71,7 @@ document.querySelectorAll('.js-add-to-cart')
                 matchingItem.quantity += selectedquantity;
             } else {
                 cart.push({
-                    productId: productId,
+                    productId,
                     quantity: selectedquantity
                 })
             }
@@ -82,7 +82,23 @@ document.querySelectorAll('.js-add-to-cart')
             document.querySelector('.js-cart-quantity')
                 .innerHTML = cartQuantity
 
+            let timeoutId;
+            const addedSelector = document.querySelector(`.js-added-selector-${productId}`)
+            addedSelector.classList.add('hidden')
+            clearTimeout(timeoutId)
 
+            timeoutId = setTimeout(() => {
+                addedSelector.classList.remove('hidden')
+            }, 2000)
+
+
+
+
+            const addedSelected = addedSelector.textContent.trim();
+
+
+            // or i can use .innerHTML
+            console.log(addedSelected)
 
         })
     })
