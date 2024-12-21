@@ -1,5 +1,6 @@
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
 import { products } from "../data/products.js";
+
 
 
 let productHTML = '';
@@ -55,54 +56,39 @@ products.forEach((product) => {
 })
 document.querySelector('.js-products-grid').innerHTML = productHTML;
 
+
+
+function updateCartQuantity() {
+    let cartQuantity = 0;
+    cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
+    })
+    document.querySelector('.js-cart-quantity')
+        .innerHTML = cartQuantity
+
+}
+
+function messageForCart(productId) {
+    let timeoutId;
+    const addedSelector = document.querySelector(`.js-added-selector-${productId}`)
+    addedSelector.classList.add('hidden')
+    clearTimeout(timeoutId)
+
+    timeoutId = setTimeout(() => {
+        addedSelector.classList.remove('hidden')
+    }, 2000)
+    const addedSelected = addedSelector.textContent.trim();
+    // or i can use .innerHTML
+
+}
+
 document.querySelectorAll('.js-add-to-cart')
     .forEach((button) => {
         button.addEventListener('click', () => {
             const { storeId: productId } = button.dataset;
-
-            const selectedProduct = document.querySelector(`.js-quantity-selector-${productId}`)
-
-            const selectedquantity = Number(selectedProduct.value)
-
-
-            let matchingItem;
-            cart.forEach((item) => {
-                if (productId === item.productId) {
-                    matchingItem = item;
-                }
-            })
-            if (matchingItem) {
-                matchingItem.quantity += selectedquantity;
-            } else {
-                cart.push({
-                    productId,
-                    quantity: selectedquantity
-                })
-            }
-            let cartQuantity = 0;
-            cart.forEach((item) => {
-                cartQuantity += item.quantity;
-            })
-            document.querySelector('.js-cart-quantity')
-                .innerHTML = cartQuantity
-
-            let timeoutId;
-            const addedSelector = document.querySelector(`.js-added-selector-${productId}`)
-            addedSelector.classList.add('hidden')
-            clearTimeout(timeoutId)
-
-            timeoutId = setTimeout(() => {
-                addedSelector.classList.remove('hidden')
-            }, 2000)
-
-
-
-
-            const addedSelected = addedSelector.textContent.trim();
-
-
-            // or i can use .innerHTML
-            console.log(addedSelected)
+            addToCart(productId);
+            updateCartQuantity();
+            messageForCart(productId);
 
         })
     })
