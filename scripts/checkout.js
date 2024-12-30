@@ -1,5 +1,10 @@
 // we used named export
-import { cart, removeFromCart, updateQuantity } from "../data/cart.js";
+import {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    updateDeliveryOption,
+} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 // we use dthe default export here
@@ -18,7 +23,7 @@ cart.forEach((cartItem) => {
     })
 
     // created a logic for the checkout page to display the date
-    const deliveryOptionId = cartItem.deliveryOptionsId
+    const deliveryOptionId = cartItem.deliveryOptionId
 
     let deliveryOption;
 
@@ -88,12 +93,12 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
         // generated the price and used the tenary operation
         const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} - `;
 
-        // 
+        //to check if the delivery option id are the same 
         const isChecked = deliveryOption.id ===
-            cartItem.deliveryOptionsId;
+            cartItem.deliveryOptionId;
 
 
-        html += ` <div class="delivery-option">
+        html += ` <div class="delivery-option js-delivery-option" data-product-id = "${matchingProduct.id}" data-delivery-option-id = "${deliveryOption.id}">
                                 <input type="radio" 
                                 ${isChecked ? 'checked' : ''}
                                 class="delivery-option-input" name="delivery-option-${matchingProduct.id}">
@@ -170,3 +175,17 @@ document.querySelectorAll('.js-save-link')
             updateCheckoutQuantity();
         });
     });
+
+
+document.querySelectorAll('.js-delivery-option')
+    .forEach((element) => {
+        element.addEventListener('click', () => {
+            const {
+                productId,
+                deliveryOptionId
+
+
+            } = element.dataset
+            updateDeliveryOption(productId, deliveryOptionId);
+        })
+    })
