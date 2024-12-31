@@ -10,6 +10,7 @@ import { formatCurrency } from "../utils/money.js";
 // we use dthe default export here
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummary() {
 
@@ -119,6 +120,7 @@ export function renderOrderSummary() {
 
                 const container = document.querySelector(`.js-delete-${matchingProductId}`);
                 container.remove();
+                renderPaymentSummary();
                 updateCheckoutQuantity();
 
             })
@@ -185,6 +187,7 @@ export function renderOrderSummary() {
                 } = element.dataset
                 updateDeliveryOption(productId, deliveryOptionId);
                 renderOrderSummary();
+                renderPaymentSummary();
             });
         });
 
