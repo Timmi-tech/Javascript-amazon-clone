@@ -9,8 +9,13 @@ import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 // we use dthe default export here
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
+import {
+    deliveryOptions,
+    getDeliveryOption,
+    calculateDeliveryDate
+} from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export function renderOrderSummary() {
 
@@ -26,9 +31,8 @@ export function renderOrderSummary() {
         const deliveryOption = getDeliveryOption(deliveryOptionId);
 
         // generate thr date using the dayjs liabary
-        const today = dayjs();
-        const deliveryDate = today.add(deliveryOption.deliveryDays, 'days')
-        const dateString = deliveryDate.format('dddd, MMMM D');
+
+        const dateString = calculateDeliveryDate(deliveryOption);
 
         cartSummaryHTML +=
             `  <div class="cart-item-container js-delete-${matchingProduct.id}">
@@ -78,9 +82,7 @@ export function renderOrderSummary() {
 
 
             // generate thr date using the dayjs liabary
-            const today = dayjs();
-            const deliveryDate = today.add(deliveryOption.deliveryDays, 'days')
-            const dateString = deliveryDate.format('dddd, MMMM D');
+            const dateString = calculateDeliveryDate(deliveryOption);
 
             // generated the price and used the tenary operation
             const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} - `;
@@ -116,10 +118,8 @@ export function renderOrderSummary() {
             link.addEventListener('click', () => {
                 const { productId: matchingProductId } = link.dataset;
                 removeFromCart(matchingProductId);
-
-
-                const container = document.querySelector(`.js-delete-${matchingProductId}`);
-                container.remove();
+                renderCheckoutHeader();
+                renderOrderSummary();
                 renderPaymentSummary();
                 updateCheckoutQuantity();
 
@@ -131,8 +131,6 @@ export function renderOrderSummary() {
         cart.forEach((cartItem) => {
             cartQuantity += cartItem.quantity;
         })
-        document.querySelector('.js-checkout-quantity')
-            .innerHTML = `${cartQuantity} items`
     }
     updateCheckoutQuantity();
 
@@ -166,12 +164,21 @@ export function renderOrderSummary() {
                 }
                 updateQuantity(matchingProductId, newQuantity);
 
+                renderCheckoutHeader();
+                renderOrderSummary();
+                renderPaymentSummary();
+
+                // We can delete the code below (from the original solution)
+                // because instead of using the DOM to update the page directly
+                // we can use MVC and re-render everything. This will make sure
+                // the page always matches the data.
+
                 // to update the quanity after choosing before checking out
-                const quantityLabel = document.querySelector(`.js-quantity-label${matchingProductId}`);
+                // const quantityLabel = document.querySelector(`.js-quantity-label${matchingProductId}`);
 
-                quantityLabel.innerHTML = newQuantity;
+                // quantityLabel.innerHTML = newQuantity;
 
-                updateCheckoutQuantity();
+                // updateCheckoutQuantity();
             });
         });
 
