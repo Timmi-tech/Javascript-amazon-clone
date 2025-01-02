@@ -1,5 +1,5 @@
 // import { describe } from "node:test";
-import { formatCurrency } from "../scripts/utils/money.js";
+import { formatCurrency } from "../../scripts/utils/money.js";
 // import { it } from "node:test"; 
 
 
