@@ -1,17 +1,10 @@
 class Cart {
     cartItems;
-
-
-
     localStorageKey;
-
-
     constructor(localStorageKey) {
         this.localStorageKey = localStorageKey;
         this.loadFromStorage();
     }
-
-
     loadFromStorage() {
         this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
         if (!this.cartItems) {

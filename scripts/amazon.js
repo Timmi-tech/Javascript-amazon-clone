@@ -1,15 +1,18 @@
 import { cart, addToCart } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 
+loadProducts(renderProductGrid);
 
-let productHTML = '';
 
-products.forEach((product) => {
+function renderProductGrid() {
+    let productHTML = '';
 
-    productHTML +=
-        `<div class="product-container">
+    products.forEach((product) => {
+
+        productHTML +=
+            `<div class="product-container">
                 <div class="product-image-container">
                     <img class="product-image" src="${product.image}">
                 </div>
@@ -56,40 +59,41 @@ products.forEach((product) => {
             Add to Cart
           </button>
             </div>`;
-})
-document.querySelector('.js-products-grid').innerHTML = productHTML;
-
-function updateCartQuantity() {
-    let cartQuantity = 0;
-    cart.forEach((cartItem) => {
-        cartQuantity += cartItem.quantity;
     })
-    document.querySelector('.js-cart-quantity')
-        .innerHTML = cartQuantity
-}
-updateCartQuantity();
+    document.querySelector('.js-products-grid').innerHTML = productHTML;
 
-function messageForCart(productId) {
-    let timeoutId;
-    const addedSelector = document.querySelector(`.js-added-selector-${productId}`)
-    addedSelector.classList.add('hidden')
-    clearTimeout(timeoutId)
-
-    timeoutId = setTimeout(() => {
-        addedSelector.classList.remove('hidden')
-    }, 2000)
-    const addedSelected = addedSelector.textContent.trim();
-    // or i can use .innerHTML
-
-}
-
-document.querySelectorAll('.js-add-to-cart')
-    .forEach((button) => {
-        button.addEventListener('click', () => {
-            const { storeId: productId } = button.dataset;
-            addToCart(productId);
-            updateCartQuantity();
-            messageForCart(productId);
-
+    function updateCartQuantity() {
+        let cartQuantity = 0;
+        cart.forEach((cartItem) => {
+            cartQuantity += cartItem.quantity;
         })
-    })
+        document.querySelector('.js-cart-quantity')
+            .innerHTML = cartQuantity
+    }
+    updateCartQuantity();
+
+    function messageForCart(productId) {
+        let timeoutId;
+        const addedSelector = document.querySelector(`.js-added-selector-${productId}`)
+        addedSelector.classList.add('hidden')
+        clearTimeout(timeoutId)
+
+        timeoutId = setTimeout(() => {
+            addedSelector.classList.remove('hidden')
+        }, 2000)
+        const addedSelected = addedSelector.textContent.trim();
+        // or i can use .innerHTML
+
+    }
+
+    document.querySelectorAll('.js-add-to-cart')
+        .forEach((button) => {
+            button.addEventListener('click', () => {
+                const { storeId: productId } = button.dataset;
+                addToCart(productId);
+                updateCartQuantity();
+                messageForCart(productId);
+
+            })
+        })
+};
