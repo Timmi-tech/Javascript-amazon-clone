@@ -730,3 +730,10 @@ export const products = [{
     return new Product(productDetails);
     // The resulting array will contain Product objects instead of raw product details
 });
+
+
+// function logThis() {
+//     console.log(this)
+// }
+// logThis()
+// logThis.call('')
