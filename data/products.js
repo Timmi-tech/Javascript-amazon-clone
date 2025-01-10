@@ -78,9 +78,12 @@ export function loadProductsFetch() {
             // The resulting array will contain Product objects instead of raw product details
         });
         console.log('load products')
+    }).catch((error) => {
+        console.log('unexpecte derroe: please try again')
     })
     return promise
 }
+
 // loadProductsFetch().then(() => {
 //     console.log('next step')
 // })
@@ -107,10 +110,15 @@ export function loadProducts(fun) {
 
         fun();
     })
+
+    xhr.addEventListener('error', (error) => {
+        console.log('unexpecte derroe: please try again')
+    })
     xhr.open('GET', 'https://supersimplebackend.dev/products');
     xhr.send();
 
 }
+loadProducts();
 
 
 
