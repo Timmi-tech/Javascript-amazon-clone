@@ -1,8 +1,8 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
-import { loadProducts, loadProductsFetch } from "../data/products.js";
-import { loadCart } from "../data/cart.js";
+import { loadProductsFetch } from "../data/products.js";
+import { loadCartFetch } from "../data/cart.js";
 // import '../data/backend-practice.js'
 
 
@@ -12,16 +12,12 @@ async function loadpage() {
 
     try {
         // throw 'error'
-        await loadProductsFetch()
-        await new Promise((resolve, reject) => {
-            // throw 'error'
-            loadCart(() => {
-                // reject('error')
-                resolve()
-            });
-        })
+        await Promise.all([
+            loadProductsFetch(),
+            loadCartFetch(),
+        ])
     } catch (error) {
-        console.log('unexpecte derroe: please try again')
+        console.log('unexpecte derroe: please try again', error)
     }
     renderOrderSummary();
     renderPaymentSummary();

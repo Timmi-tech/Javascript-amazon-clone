@@ -25,29 +25,30 @@ function saveToStorage() {
     localStorage.setItem('cart', JSON.stringify(cart))
 }
 
-export function addToCart(productId) {
-    const selectedProduct = document.querySelector(`.js-quantity-selector-${productId}`)
-
-    const selectedquantity = Number(selectedProduct.value)
-
-
+export function addToCart(productId, selectedQuantity = 1) {
     let matchingItem;
+
+    // Find the product in the cart
     cart.forEach((cartItem) => {
         if (productId === cartItem.productId) {
             matchingItem = cartItem;
         }
-    })
+    });
+
+    // Update the cart item or add a new one
     if (matchingItem) {
-        matchingItem.quantity += selectedquantity;
+        matchingItem.quantity += selectedQuantity;
     } else {
         cart.push({
             productId,
-            quantity: selectedquantity,
-            deliveryOptionId: '1'
-        })
+            quantity: selectedQuantity,
+            deliveryOptionId: '1', // Default delivery option
+        });
     }
-    saveToStorage();
+
+    saveToStorage(); // Save cart state
 }
+
 
 export function removeFromCart(productId) {
     const newCart = [];
@@ -87,15 +88,25 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
     saveToStorage();
 
 }
+export function resetCart() {
+    cart = [];
+    saveToStorage();
+}
 
-export function loadCart(fun) {
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', () => {
+// export function loadCart(fun) {
+//     const xhr = new XMLHttpRequest();
+//     xhr.addEventListener('load', () => {
 
-        console.log(xhr.response)
-        fun();
-    });
-    xhr.open('GET', 'https://supersimplebackend.dev/cart');
-    xhr.send();
+//         console.log(xhr.response)
+//         fun();
+//     });
+//     xhr.open('GET', 'https://supersimplebackend.dev/cart');
+//     xhr.send();
+// }
+
+export async function loadCartFetch() {
+    const response = await fetch('https://supersimplebackend.dev/cart')
+    const text = await response.text();
 
 }
+loadCartFetch()

@@ -19,6 +19,7 @@ class Product {
     name; // Product name
     rating; // Rating details of the product
     priceCents; // Price in cents for precision in financial calculations
+    keywords;
 
     // Constructor to initialize a Product object with given details
     constructor(productDetails) {
@@ -27,6 +28,7 @@ class Product {
         this.name = productDetails.name;
         this.rating = productDetails.rating;
         this.priceCents = productDetails.priceCents; // Assign product price in cents
+        this.keywords = productDetails.keywords;
     }
 
     // Method to construct the URL for the product's star rating image
