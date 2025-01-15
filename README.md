@@ -18,7 +18,10 @@ Check out the live version here: [JavaScript Amazon Clone](https://timmi-tech.gi
 ## 📸 Screenshots
 
 **Main Interface**  
-![image](https://user-images.githubusercontent.com/your-image-path)
+![image](https://github.com/user-attachments/assets/641e9c6b-e5a1-4322-832e-6a75806e3a1b)
+![image](https://github.com/user-attachments/assets/6e446262-ed6f-4a95-9510-5e0754b9ab14)
+![image](https://github.com/user-attachments/assets/5a0cf6be-6950-402c-971a-222e016dcf82)
+![image](https://github.com/user-attachments/assets/925470ef-bf5a-41bb-a6fa-821ab135bfea)
 
 ## 💪 Technologies Used
 
